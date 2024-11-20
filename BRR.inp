@@ -1,0 +1,710 @@
+[Title]
+phasan
+
+
+[Parameters]
+icntl = 16
+maxcas = 1e4
+maxbch = 1e4
+negs = -1       $transport of electrons, positrons and photons
+istdcut = 0     $control of stdcut
+$istdev = -1
+$rseed = 0
+
+$common parameters
+
+set: c1[1e9] $time in ns
+set: c2[pi/180] $deg to rad
+set: c3[1.3] $thickness of SzAV shielding in cm
+set: c4[100] $distance between assembly exit and end of channel
+
+$assembly parameters
+
+set: c5[10] $step length
+set: c6[1] $number of steps
+set: c7[1] $number of staircases
+set: c8[10] $height of assembly (W)
+set: c9[0] $thicknes of moderator walls
+
+
+[Counter]
+counter = 1
+part = neutron
+reg coll
+65  1
+
+
+[Source]
+
+$upper hexagon plane
+s-type = 2
+
+x0 = -13.5
+x1 = 13.5
+
+y0 = 25.21
+y1 = 25.21
+
+z0 = 0
+z1 = 60
+
+proj = neutron
+dir = all
+phi = all
+
+e-type = 3
+et0 = 300*8.617e-11
+et1 = 300*8.617e-13
+et2 = 300*8.617e-9
+
+trcl = 4
+
+[Source]
+
+$upper-right hexagon plane
+s-type = 2
+
+x0 = -13.5
+x1 = 13.5
+
+y0 = 25.21
+y1 = 25.21
+
+z0 = 0
+z1 = 60
+
+trcl = 0 0 0 -pi/3-6*c2 0 0  0 0 0 0 0 0 2
+
+proj = neutron
+dir = all
+phi = all
+
+e-type = 3
+et0 = 300*8.617e-11
+et1 = 300*8.617e-13
+et2 = 300*8.617e-9
+
+[Source] off
+s-type = 17
+file = dump_for_chan_dmp $.out
+dump = -11
+1 2 3 4 5 6 7 8 9 18 19
+
+idmpmode = 0
+
+
+[Material]
+$Be
+M1 Be 1
+MT1 be.20t
+
+$SzAV-1 (Al alloy): Mg 0.5% Al 98.7% Si 0.8% 
+M2 13027 0.987 12000 0.005 14000 0.008 
+
+$light water 
+M3 1001 2 8016 1                                                       
+MT3 lwtr.20t
+
+$air
+M4 8016 0.2 7014 0.8
+
+$parahydrogen
+M5 H 2
+MT5 hpara.20t 
+
+$Al 
+M6 Al 1 
+
+$mixed hydrogen
+M7   1H 0.5  
+MT7  hpara.20t   hortho.20t        
+
+$orthohydrogen
+M8  H 1 
+MT8 hortho.20t 
+
+
+[MatNameColor]
+1 Be yellowgreen
+2 SzAV orangeyellow
+3 H2O pastelblue
+4 air lightgray
+5 pH pastelcyan
+6 Al pastelviolet
+
+[Surface]
+$void border
+100 so 1e5 
+
+$Be tank
+1 cz 50
+2 pz 0
+3 pz 60
+
+$hexagon
+4 4 HEX 0 0 0  0 0 60  0 25.2 0  25.2*sin(60*c2) 12.6 0  25.2*sin(60*c2) -12.6 0
+
+$Be boxes
+5 4 BOX 62.5 0 0  -41.2*cos(6*c2) -41.2*sin(6*c2) 0  -60*cos(84*c2) 60*sin(84.1*c2) 0  0 0 60
+
+6 4 BOX -30.3 60.3 0  -26.9*sin(6*c2) -26.9*cos(6*c2) 0  85.3*sin(84*c2) -85.3*cos(84*c2) 0  0 0 60
+
+$up looking channel
+7 4 RCC 44.5*cos(38.7*c2) 44.5*sin(38.7*c2) 30  -(c5*c6+c4+100)*sin(6*c2) (c5*c6+c4+100)*cos(6*c2) 0 10.25
+
+$left looking channel
+8 4 RCC -42.8*sin(2.1*c2) 42.8*cos(2.1*c2) 30  -110*cos(6*c2) 110*sin(6*c2) 0 4.9
+
+$SzAV shielding
+
+$of Be tank
+9 cz 50+c3
+
+$of up looking channel
+10 4 RCC 44.5*cos(38.7*c2)+c3*sin(6*c2) 44.5*sin(38.7*c2)-c3*cos(6*c2) 30  -(c5*c6+c4+100+2*c3)*sin(6*c2) (c5*c6+c4+100+2*c3)*cos(6*c2) 0 10.25+c3
+
+$of left looking channel
+11 4 RCC -42.8*sin(2.1*c2)+c3*cos(6*c2) 42.8*cos(2.1*c2)-c3*sin(6*c2) 30  -(110+2*c3)*cos(6*c2) (110+2*c3)*sin(6*c2) 0 4.9+c3
+
+$of right looking channel
+16 cx 5+c3
+17 px 80+2*c3
+
+$water tank
+12 cz 115-c3
+
+$right looking channel
+13 cx 5
+14 px 0
+15 px 80
+
+$PHASAN
+
+$assembly
+23 PX 0
+24 PX 10
+21 PY 0
+22 PY c5*c6
+25 PZ 0
+26 PZ c8
+
+$step
+31 PY 0
+32 PY c5
+35 PZ 0
+36 PZ c8/c7/c6
+
+$staircase
+45 PZ 0
+46 PZ c8/c7
+
+$Al walls
+20 BOX c9 c9 c9  10-2*c9 0 0  0 c5-2*c9 0  0 0 c8/c7/c6-2*c9
+
+$box to close PHASAN bottom
+30 BOX 0 -0.5 0  0 0.5 0  10 0 0  0 0 c8
+
+[Cell]
+$void
+99  -1  #51 #52 #53 #54 #55 #56 #57 #58 #59 #60 #61 #70
+
+$Be tank
+51  1 -1.85 -1 2 -3 4 #54 #55 #57 #58 #59 #60 #61 #70
+
+$Be boxes
+52  1 -1.85 -5 1 #54 #55 #57 #58 #59 #60 #61 #70
+53  1 -1.85 -6 1 #52 #54 #55 #57 #58 #59 #60 #61 #70
+
+$up looking channel
+54 -0.001164 -7 #61 #70
+
+$left looking channel
+55  4 -0.001164 -8 
+
+$water tank
+56 3 -1 -12 1 2 -3 #52 #53 #54 #55 #57 #58 #59 #60 #61 #70
+
+$SzAV shielding
+
+$of up looking channel
+57 2 -2.7 7 -10 #70
+
+$of left looking channel
+58 2 -2.7 8 -11 
+
+$of right looking channel
+60 2 -2.7 -16 14 -17 #59 TRCL = 2
+
+$right looking channel
+59 4 -0.001164 -13 14 -15 TRCL = 1
+
+$PHASAN
+
+$assembly
+61 0  23 -24 21 -22 25 -26 FILL=1 TRCL = 3
+
+$staircase
+62 0 -46 45 LAT=1 U=1
+      FILL=0:0 0:0 0:0
+           2
+
+$step
+63 0 -36  35 -32 31 LAT=1 U=2
+      FILL=0:0 0:0 0:0
+      4
+
+64 4 -0.001164 -24 21 -22 25 -26 U=3
+65 5 -0.07 -20 U=4
+66 6 -2.7  20 U=4
+
+$box to close PHASAN bottom
+70 -1 -30 TRCL = 3
+
+[Transform]
+$right looking channel
+TR1 38.4 7 30  10*c2-6*c2 0 0  0 0 0 0 0 0 2
+
+$Al shielding of right looking channel
+TR2 38.4-c3*cos(10*c2) 7-c3*sin(10*c2) 30  10*c2-6*c2 0 0  0 0 0 0 0 0 2
+
+$PHASAN
+TR3 44.5*cos(38.7*c2-6*c2)-5 44.5*sin(38.7*c2-6*c2)+0.5 30-5  0 0 0  0 0 0 0 0 0 2
+
+$whole reactor rotation on -6 deg around z
+TR4 0 0 0  -6*c2 0 0  0 0 0 0 0 0 2
+
+
+$test of weight windows
+
+[Weight Window]off
+part = neutron
+eng = 3
+        0.2e-9  25e-9   1
+reg     ww1     ww2     ww3
+56      2       2       2       
+55      4       4       4
+58      4       4       4
+59      4       4       4
+60      4       4       4
+54      4       0.25   0.25
+
+[Weight Window] off
+part = neutron
+eng = 1
+        0.2e-9
+reg     ww1   
+{51-60} 
+
+
+$Tallies
+
+
+$geometry check
+
+[T-Track] off
+title = top view
+mesh = xyz
+           
+x-type = 2            
+xmin = -130
+xmax = 130
+nx = 100
+
+y-type = 2
+ymin = -130
+ymax = 44.5*sin(38.7*c2-6*c2)+c5+c4+150
+ny = 100
+   
+z-type = 2           
+zmin = 30-10.25      
+zmax = 30+10.25
+nz = 1
+
+e-type = 2
+emin = 0
+emax = 25e-9     
+ne = 1 
+
+t-type = 2
+tmin = 0
+tmax = c1
+nt = 1
+
+axis = xy        
+file = top_view.out     
+part = neutron        
+
+unit = 1            
+epsout = 2             
+gshow = 3
+resol = 1
+
+[T-Track] off
+title = side view
+mesh = xyz
+           
+x-type = 2            
+xmin = -10
+xmax = 70
+nx = 100
+
+y-type = 2
+ymin = 25
+ymax = 26
+ny = 1
+   
+z-type = 2           
+zmin = -120       
+zmax = 120
+nz = 100
+
+e-type = 2
+emin = 25e-9
+emax = 100e-9       
+ne = 1
+
+t-type = 2
+tmin = 0
+tmax = c1
+nt = 1
+
+trcl = 0 0 0 0 0 1 0 1 0 1 0 0
+x-txt = x [cm]
+y-txt = z [cm]
+
+axis = zx       
+file = side_view.out     
+part = neutron        
+
+unit = 1            
+epsout = 2             
+gshow = 1
+resol = 3
+
+
+[T-Track] off
+title = top view of up looking channel
+mesh = xyz
+
+x-type = 2            
+xmin = -10.25-4
+xmax = 10.25+4
+nx = 100
+
+y-type = 2
+ymin = 5-3.33
+ymax = 5
+ny = 1
+   
+z-type = 2           
+zmin = 0-4
+zmax = c5+c4+4
+nz = 100
+
+e-type = 2
+emin = 0
+emax = 25e-9       
+ne = 1
+
+trcl = 44.5*cos(38.7*c2-6*c2) 44.5*sin(38.7*c2-6*c2) 30  0 0 0  1 -pi/2  3 6*c2-6*c2 0 0 3
+
+axis = xz
+file = top_view_of_up_looking_channel.out
+part = neutron
+
+unit = 1            
+epsout = 2             
+gshow = 3 
+
+[T-Track] off
+title = side view of up looking channel
+mesh = xyz
+
+x-type = 2            
+xmin = -10.25
+xmax = 10.25
+nx = 1
+
+y-type = 2
+ymin = -10.25-4
+ymax = 10.25+4
+ny = 100
+   
+z-type = 2           
+zmin = 0-4
+zmax = c5+c4+4
+nz = 100
+
+e-type = 2
+emin = 0
+emax = 25e-9     
+ne = 1
+
+trcl = 44.5*cos(38.7*c2-6*c2) 44.5*sin(38.7*c2-6*c2) 30  0 0 0  1 -pi/2  3 0 0 0 3
+
+axis = yz
+file = side_view_of_up_looking_channel.out
+part = neutron
+
+unit = 1            
+epsout = 2             
+gshow = 3 
+
+[T-Track] off
+title = rear view of up looking channel
+mesh = xyz
+
+x-type = 2            
+xmin = -10.25-4
+xmax = 10.25+4
+nx = 100
+
+y-type = 2
+ymin = -10.25-4
+ymax = 10.25+4
+ny = 100
+   
+z-type = 2           
+zmin = 0
+zmax = c5
+nz = 1
+
+e-type = 2
+emin = 0
+emax = 25e-9       
+ne = 1
+
+trcl = 44.5*cos(38.7*c2-6*c2) 44.5*sin(38.7*c2-6*c2) 30  0 0 0  1 -pi/2  3 0 0 0 3
+
+axis = xy
+file = rear_view_of_up_looking_channel.out
+part = neutron
+
+unit = 1            
+epsout = 2             
+gshow = 3 
+
+[T-Track] off
+title = flux along up looking channel
+mesh = r-z
+
+r-type = 2
+rmin = 0
+rmax = 10.25
+nr = 1
+
+z-type = 2
+zmin = 0
+zmax = 94
+nz = 100
+
+e-type = 2
+emin = 25e-9
+emax = 100e-9       
+ne = 1
+
+trcl = 44.5*cos(38.7*c2-6*c2) 44.5*sin(38.7*c2-6*c2) 30  0 0 0  1 -pi/2  3 6*c2-6*c2 0 0 3
+
+axis = z 
+file = long_flux_in_chan.out
+part = neutron
+
+unit = 1            
+epsout = 2             
+gshow = 3 
+
+$stdcut = 0.1
+
+[T-Track] off
+title = radial flux at the bottom of up looking channel
+mesh = r-z
+
+r-type = 2
+rmin = 0
+rmax = 10.25
+nr = 100
+
+z-type = 2
+zmin = 0
+zmax = 1
+nz = 1
+
+e-type = 2
+emin = 25e-9
+emax = 100e-9       
+ne = 1
+
+trcl = 44.5*cos(38.7*c2-6*c2) 44.5*sin(38.7*c2-6*c2) 30  0 0 0  1 -pi/2  3 6*c2-6*c2 0 0 3
+
+axis = r
+file = rad_flux_in_chan.out
+part = neutron
+
+unit = 1            
+epsout = 2             
+gshow = 3
+
+[T-Track] off
+title = flux at assembly exit
+
+mesh = xyz
+
+x-type = 2            
+xmin = 44.5*cos(38.7*c2-6*c2)-5
+xmax = 44.5*cos(38.7*c2-6*c2)+5
+nx = 1
+
+y-type = 2
+ymin = 44.5*sin(38.7*c2-6*c2)+c5*c6
+ymax = 44.5*sin(38.7*c2-6*c2)+c5*c6+0.1
+ny = 1
+   
+z-type = 2           
+zmin = 30-c8/2
+zmax = 30+c8/2
+nz = 1
+
+e-type = 2
+emin = 0
+emax = 25e-9      
+ne = 20
+
+$a-type = -2
+$amin = 0
+$amax = 90
+$na = 45
+
+ctmin(1) = 1
+
+axis = eng
+file = flux_at_assembly_exit.out
+part = neutron
+
+unit = 1            
+epsout = 2             
+gshow = 3 
+
+stdcut = 0.5
+
+$anatally start
+$manatally = 1
+$sfile = track_a.out
+$anatally end
+
+
+
+[T-Cross] off
+title = flux at assembly exit with angular selection
+output = flux
+
+mesh = xyz
+
+x-type = 2            
+xmin = -5
+xmax = 5
+nx = 1
+
+y-type = 2
+ymin = -c8/2
+ymax = c8/2
+ny = 1
+
+z-type = 2           
+zmin = 0
+zmax = 0.1
+nz = 1
+
+e-type = 2
+emin = 0
+emax = 25e-9       
+ne = 1
+
+$a-type = -2
+$amin = 0
+$amax = 3
+$na = 1
+
+$iangform = 0
+
+trcl = 44.5*cos(38.7*c2-6*c2) 44.5*sin(38.7*c2-6*c2)+c5*c6 30  0 0 0  1 -pi/2  3 6*c2-6*c2 0 0 3
+
+ctmin(1) = 1
+
+axis = the
+file = flux_at_assembly_exit_ang.out
+part = neutron
+
+unit = 1            
+epsout = 2             
+gshow = 3
+
+stdcut = 0.1
+
+
+[T-Point]
+
+title = flux at the end of chan
+
+point = 1
+x   y   z   r0
+44.5*cos(38.7*c2-6*c2)   44.5*sin(38.7*c2-6*c2)+c5*c6+c4   30   0.1
+
+
+e-type = 2
+emin = 0
+emax = 25e-9       
+ne = 1
+
+ctmin(1) = 1
+
+axis = eng
+file = flux_at_the_end_of_chan.out
+part = neutron
+
+unit = 1
+epsout = 1             
+
+stdcut = 0.01
+
+[T-Cross] off
+
+title = dump file for up looking channel
+part = neutron
+unit = 1
+mesh = reg
+reg = 1
+   r-from r-to area
+   57      54    6714.0
+
+dump = -11
+1 2 3 4 5 6 7 8 9 18 19
+file = dump_for_chan.out
+
+output = flux
+
+
+[T-Cross] off
+title = flux at the surface of up looking channel
+
+mesh = reg
+reg = 1
+   r-from r-to area
+   57      54    6714.0
+
+e-type = 2
+emin = 0
+emax = 200e-9       
+ne = 100
+
+axis = eng
+file = surface_flux_at_chan.out
+part = neutron
+
+unit = 1           
+epsout = 2             
+gshow = 3
+
+output = flux
+
+
+[End]
