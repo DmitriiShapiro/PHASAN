@@ -1,0 +1,51 @@
+[ T-Point ]
+    title = flux at the end of chan
+    point =    1            # number of point estimators
+  non      x             y             z            r0
+    1     37.44723      146.0407      30.00000     0.1000000    
+   e-type =    2            # e-mesh is linear given by emin, emax and ne
+     emin =   0.000000      # minimum value of e-mesh points
+     emax =  2.5000000E-08  # maximum value of e-mesh points
+#    edel =  2.5000000E-08  # mesh width of e-mesh points
+       ne =      1          # number of e-mesh points
+#    data = ( e(i), i = 1, ne + 1 )
+#           0.00000E+00  2.50000E-08
+     unit =    1            # unit is [1/cm^2/source]
+     axis =  eng            # axis of output
+     file = flux_at_the_end_of_chan.out  # file name of output for the above axis
+     part =  neutron  
+# kf/name :  2112     
+   epsout =    1            # (D=0) generate eps file by ANGEL
+ ctmin(1) =    1            # (D=-9999) min. of counter 1
+ ctmax(1) = 9999            # (D= 9999) max. of counter 1
+   stdcut = 3.0000000E-02   # (D=-1) threshold value of STD cutoff
+#    used :        main (  %)        temp (  %)       total (  %)
+#  memory :           4 (  0)           0 (  0)           4 (  0)
+
+#------------------------------------------------------------------------------
+#newpage:
+#   no. =  1   point# =  1
+#     x =    37.45      y =    146.0      z =    30.00    
+
+x: Energy [MeV]
+y: Flux [1/cm^2/source]              
+p: xlin ylog afac(0.8) form(0.9)
+h: n            x            y(neutron ),hh0l n  
+#  e-lower      e-upper        neutron   r.err 
+   0.0000E+00   2.5000E-08   5.0734E-08  0.0300
+
+#   sum over                 5.0734E-08
+
+'no. =  1,  point# =  1'
+msuc: {\huge flux at the end of chan}
+msdr: {\it plotted by \ANGEL \version}
+msdl: {\it calculated by \PHITS  3.34}
+e:
+ 
+# Information for Restart Calculation
+# This calculation was newly started
+# istdev =  2 # 1:Batch variance, 2:History variance
+# resc2  = 1.25000000000000000E+06 # Total source weight or Total source weight / maxcas
+# resc3  = 1.25000000000000000E+06 # Total history number or Total batch number
+# maxcas =       10000 # History / Batch, only used for istdev=1
+# bitrseed = 1111100011010001111011111010001010110111000011010000101000000001 # bit data of rseed

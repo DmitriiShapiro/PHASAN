@@ -664,7 +664,7 @@ part = neutron
 unit = 1
 epsout = 1             
 
-stdcut = 0.01
+stdcut = 0.03
 
 [T-Cross] off
 

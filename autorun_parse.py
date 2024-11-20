@@ -5,8 +5,9 @@ import linecache
 
 digits = ('0','1','2','3','4','5','6','7','8','9')
 
-mainpath = '/home/dmitrii/phits/projects/BRR/outfiles'
+mainpath = '/Users/peterkonik/Library/Mobile Documents/com~apple~CloudDocs/JOB/BNC/Guide system project/moderator_simulations/PHASAN/outfiles'
 dirlist = sorted(os.listdir(mainpath)) #list of directories' names'
+dirlist.remove(".DS_Store")
 
 #list of files' paths'
 filelist = [] 
