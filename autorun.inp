@@ -1,0 +1,6 @@
+file = BRR.inp
+set:c5
+c-type = 2
+cmin = 1
+cmax = 20
+nc = 20

@@ -3,7 +3,7 @@ phasan
 
 
 [Parameters]
-icntl = 0
+icntl = 16
 maxcas = 1e4
 maxbch = 1e4
 negs = -1       $transport of electrons, positrons and photons
@@ -20,7 +20,7 @@ set: c4[100] $distance between assembly exit and end of channel
 
 $assembly parameters
 
-set: c5[5] $step length
+set: c5[10] $step length
 set: c6[1] $number of steps
 set: c7[1] $number of staircases
 set: c8[10] $height of assembly (W)
@@ -150,7 +150,7 @@ $Be boxes
 6 4 BOX -30.3 60.3 0  -26.9*sin(6*c2) -26.9*cos(6*c2) 0  85.3*sin(84*c2) -85.3*cos(84*c2) 0  0 0 60
 
 $up looking channel
-7 4 RCC 44.5*cos(38.7*c2) 44.5*sin(38.7*c2) 30  -(c5+c4+100)*sin(6*c2) (c5+c4+100)*cos(6*c2) 0 10.25
+7 4 RCC 44.5*cos(38.7*c2) 44.5*sin(38.7*c2) 30  -(c5*c6+c4+100)*sin(6*c2) (c5*c6+c4+100)*cos(6*c2) 0 10.25
 
 $left looking channel
 8 4 RCC -42.8*sin(2.1*c2) 42.8*cos(2.1*c2) 30  -110*cos(6*c2) 110*sin(6*c2) 0 4.9
@@ -161,7 +161,7 @@ $of Be tank
 9 cz 50+c3
 
 $of up looking channel
-10 4 RCC 44.5*cos(38.7*c2)+c3*sin(6*c2) 44.5*sin(38.7*c2)-c3*cos(6*c2) 30  -(c5+c4+100+2*c3)*sin(6*c2) (c5+c4+100+2*c3)*cos(6*c2) 0 10.25+c3
+10 4 RCC 44.5*cos(38.7*c2)+c3*sin(6*c2) 44.5*sin(38.7*c2)-c3*cos(6*c2) 30  -(c5*c6+c4+100+2*c3)*sin(6*c2) (c5*c6+c4+100+2*c3)*cos(6*c2) 0 10.25+c3
 
 $of left looking channel
 11 4 RCC -42.8*sin(2.1*c2)+c3*cos(6*c2) 42.8*cos(2.1*c2)-c3*sin(6*c2) 30  -(110+2*c3)*cos(6*c2) (110+2*c3)*sin(6*c2) 0 4.9+c3
@@ -201,32 +201,33 @@ $staircase
 $Al walls
 20 BOX c9 c9 c9  10-2*c9 0 0  0 c5-2*c9 0  0 0 c8/c7/c6-2*c9
 
-
+$box to close PHASAN bottom
+30 BOX 0 -0.5 0  0 0.5 0  10 0 0  0 0 c8
 
 [Cell]
 $void
-99  -1  #51 #52 #53 #54 #55 #56 #57 #58 #59 #60 #61
+99  -1  #51 #52 #53 #54 #55 #56 #57 #58 #59 #60 #61 #70
 
 $Be tank
-51  1 -1.85 -1 2 -3 4 #54 #55 #57 #58 #59 #60 #61
+51  1 -1.85 -1 2 -3 4 #54 #55 #57 #58 #59 #60 #61 #70
 
 $Be boxes
-52  1 -1.85 -5 1 #54 #55 #57 #58 #59 #60 #61  
-53  1 -1.85 -6 1 #52 #54 #55 #57 #58 #59 #60 #61
+52  1 -1.85 -5 1 #54 #55 #57 #58 #59 #60 #61 #70
+53  1 -1.85 -6 1 #52 #54 #55 #57 #58 #59 #60 #61 #70
 
 $up looking channel
-54 -0.001164 -7 #61  
+54 -0.001164 -7 #61 #70
 
 $left looking channel
 55  4 -0.001164 -8 
 
 $water tank
-56 3 -1 -12 1 2 -3 #52 #53 #54 #55 #57 #58 #59 #60 #61
+56 3 -1 -12 1 2 -3 #52 #53 #54 #55 #57 #58 #59 #60 #61 #70
 
 $SzAV shielding
 
 $of up looking channel
-57 2 -2.7 7 -10
+57 2 -2.7 7 -10 #70
 
 $of left looking channel
 58 2 -2.7 8 -11 
@@ -256,6 +257,8 @@ $step
 65 5 -0.07 -20 U=4
 66 6 -2.7  20 U=4
 
+$box to close PHASAN bottom
+70 -1 -30 TRCL = 3
 
 [Transform]
 $right looking channel
@@ -265,7 +268,7 @@ $Al shielding of right looking channel
 TR2 38.4-c3*cos(10*c2) 7-c3*sin(10*c2) 30  10*c2-6*c2 0 0  0 0 0 0 0 0 2
 
 $PHASAN
-TR3 44.5*cos(38.7*c2-6*c2)-5 44.5*sin(38.7*c2-6*c2) 30-5  0 0 0  0 0 0 0 0 0 2
+TR3 44.5*cos(38.7*c2-6*c2)-5 44.5*sin(38.7*c2-6*c2)+0.5 30-5  0 0 0  0 0 0 0 0 0 2
 
 $whole reactor rotation on -6 deg around z
 TR4 0 0 0  -6*c2 0 0  0 0 0 0 0 0 2
