@@ -3,7 +3,8 @@ phasan
 
 
 [Parameters]
-icntl = 0
+icntl = 8
+
 maxcas = 1e4
 maxbch = 1e4
 negs = -1       $transport of electrons, positrons and photons
