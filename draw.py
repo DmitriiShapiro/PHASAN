@@ -14,8 +14,8 @@ def main():
     print(f"{val} ± {err}")
 
     # uncomment to draw the histogram:
-    h.Draw("hist e")
-    input()
+    # h.Draw("hist e")
+    # input()
 
 
 if __name__ == "__main__":
