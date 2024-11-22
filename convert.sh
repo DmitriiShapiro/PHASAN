@@ -20,3 +20,5 @@ n=$(ls -1 $base/*/$root|wc -l)
 
 # divide $sum to $n to get average and save results in the $root file
 scale -n $n -o $root $sum
+
+rm -f $sum
