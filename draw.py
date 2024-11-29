@@ -5,8 +5,8 @@ import ROOT
 
 
 def main():
-    f = ROOT.TFile("flux_at_the_end_of_chan.root")
-    h = f.Get("h1")
+    f = ROOT.TFile("energy.root")
+    h = f.Get("energy")
 
     val = h.GetBinContent(1)
     err = h.GetBinError(1)
