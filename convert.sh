@@ -2,11 +2,11 @@
 
 base="outfiles"
 # PHITS-generated output file name
-f=flux_at_the_end_of_chan.out
+f=energy.txt
 # the corresponding ROOT file name
-root=${f%.out}.root
+root=${f%.*}.root
 
-# convert .out to .root
+# convert $f to .root
 parallel "cd {} && angel2root $f" ::: $base/*
 
 # temporary file name for the sum file
