@@ -2,7 +2,7 @@
 
 base="outfiles"
 # PHITS-generated output file name
-f=energy.txt
+f=flux_at_the_end_of_chan.out
 # the corresponding ROOT file name
 root=${f%.*}.root
 
